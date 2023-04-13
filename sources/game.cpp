@@ -14,6 +14,8 @@ namespace ariel{
         this->p2 = p2;
         reset();
         setMaps();
+        this->turns = 0;
+        this->isGameOver = false;
 
     }
 
@@ -25,11 +27,30 @@ namespace ariel{
             this->p1.addCard(deck.draw());
             this->p2.addCard(deck.draw());
         }
+        this->isGameOver = false;
+        this->turns = 0;
 
     }
 
     void Game :: playTurn() {
-        if(this->p1.myCards.empty() || this->p2.myCards.empty()) return;
+        // cout << "play turn  : "<<this->turns << endl;
+        if(this->isGameOver == true){
+            throw std::runtime_error ("Game is over!");
+        }
+
+        if (this->p1.name == this->p2.name)
+        {
+            throw std::runtime_error ("Player can't play against himself!");
+        }
+        if(this->turns == 26){
+            cout << "Game is over! throh error by me" << endl;
+            p1.myCards.clear();
+            p2.myCards.clear();
+            throw std::runtime_error ("Game is over!");
+        }
+        if(this->p1.myCards.empty() || this->p2.myCards.empty()){
+            throw std::runtime_error ("Game is over!");
+        };
         Card card1 = this->p1.getCard();
         Card card2 = this->p2.getCard();
         
@@ -50,12 +71,25 @@ namespace ariel{
             this->sideCards.push_back(card1);
             this->sideCards.push_back(card2);
         }
+        this->turns++;
         string message = logStringMessage(winner);
         logString.push_back(message);
     }
     void Game :: printWiner() {
-        if(this->p1.myCards.empty()) cout <<p2.name <<" wins." << endl;
-        else cout <<p1.name << " wins." << endl;
+        string winner;
+        if (p1.cardesTaken() > p2.cardesTaken())
+        {
+            winner += "The winner is " + p1.name;
+        }
+        else if (p1.cardesTaken() < p2.cardesTaken())
+        {
+            winner += "The winner is " + p2.name;
+        }
+        else
+        {
+            winner += "Draw!, there is no winner";
+        }
+        cout << winner << endl;
     }
     void Game :: printStats() {
         cout <<p1.name<< " has " << this->p1.stacksize() << " cards" << endl;
@@ -67,9 +101,14 @@ namespace ariel{
         }
     }
     void Game :: playAll() {
+        // cout << "Game started! :"<<this->turns << endl;
         while(!this->p1.myCards.empty() && !this->p2.myCards.empty()){
             playTurn();
         }
+        p1.myCards.clear();
+        p2.myCards.clear();
+        // cout << "Game over!" << endl;
+        this->isGameOver = true;
     }
     void Game :: printLastTurn() {
         cout << p1.name << " played " << valueMap[p1.lastCard.value] << " of " << suitsMap[p1.lastCard.suits];
@@ -105,7 +144,8 @@ namespace ariel{
     {
         for (int i = 0; i < this->sideCards.size(); i++)
         {
-            winner.addCard(this->sideCards[i]);
+            winner.addCard(this->sideCards[static_cast<std::vector<Card>::size_type>(i)]);
+
         }
         this->sideCards.clear();
     }
@@ -141,6 +181,7 @@ namespace ariel{
         string message = p1.name + " played " + valueMap[p1.lastCard.value] + " of " + suitsMap[p1.lastCard.suits] + ". ";
         message += p2.name + " played " + valueMap[p2.lastCard.value] + " of " + suitsMap[p2.lastCard.suits] + ".";
         message += winnerM;
+        return message;
     }   
 
 };

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <map>
 #include "player.hpp"
 
 namespace ariel{
@@ -14,6 +15,7 @@ namespace ariel{
     public:
         Game(Player &p1, Player &p2);
         void reset();
+        int turns;
         void playTurn();
         void printWiner();
         void printStats();
@@ -23,6 +25,7 @@ namespace ariel{
         string logStringMessage(int winner);
 
     private:
+        bool isGameOver;
         int highestCard(Card &card1, Card &card2);
         vector<Card> sideCards;
         vector<string> logString;

@@ -27,12 +27,13 @@ namespace ariel{
     }
 
     int Player :: stacksize() {
-        cout << this->myCards.size() << endl;
+        cout << "stack size : " << this->myCards.size() << endl;
+        return this->myCards.size();
         } 
 
 
 
     int Player :: cardesTaken() {
-        cout << this->cardsWon << endl;
+        return this->cardsWon ;
     }
 };

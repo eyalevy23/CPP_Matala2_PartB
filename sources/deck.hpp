@@ -1,12 +1,13 @@
 #ifndef DECK_HPP
 #define DECK_HPP
 
-// #include "deck.hpp"
+#include "card.hpp"
+#include <vector>
 
 namespace ariel{
 
     class Deck{
-        vector<Card> cards;
+        std::vector<Card> cards;
 
     public:
         Deck();

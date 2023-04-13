@@ -22,7 +22,7 @@ namespace ariel{
     Card Deck::draw(){
         int deckSize = this->cards.size();
         int randomIndex = rand() % deckSize;
-        Card card = this->cards[randomIndex];
+        Card card = this->cards[static_cast<std::vector<Card>::size_type>(randomIndex)];
         this->cards.erase(this->cards.begin() + randomIndex);
         return card;
     }

@@ -26,9 +26,8 @@ namespace ariel{
         Card lastCard;
     };
 
-    int Player :: stacksize() {
-        return myCards.size();
-    }
+  
+  
 
 }
 
